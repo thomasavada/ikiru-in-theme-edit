@@ -1,0 +1,155 @@
+<div class="customstyle{{ section.id }} section_magic_slides_area" data-aos="{{section.settings.animation}}" >
+
+  <div class="container-fluid">
+      <div class="section-block">
+        {%- if section.settings.heading != blank -%}
+        <h3 class="section-title-0 text-center mb-5 font-family-2">
+          <span>{{section.settings.heading}}</span>
+        </h3>
+        {%- endif -%}
+  		    {%- if section.blocks.size > 0 -%}
+         <div id="slider_{{section.id}}" class="sec__magic_slider  slick_slider_dynamic" data-items="{{section.settings.slideitem}}" data-address=".customstyle{{ section.id }} .slick-slideshow__slide">
+        {%- for block in section.blocks -%}
+        <div class="slick-slideshow__slide">
+          {%- if block.settings.button_link != blank -%}
+                <a href="{{block.settings.button_link}}">
+                {%- endif -%}
+         	 {%- if block.settings.image != blank -%}
+                <img loading="lazy" src="{%- include 'srcBlank' -%}" class="lazyload transition" data-src="{{block.settings.image | img_url:'960x'}}">
+                {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+               <div class="content--box figcaption--{{block.id}}">
+                  {%- if block.settings.description -%}
+                  {{block.settings.description}}
+                  {%- endif -%}
+                  {%- if block.settings.button_text != blank -%}
+                  <button class="btn btn-theme gradient-theme">
+                    <span class="px-2">{{block.settings.button_text}}</span>
+                    {{block.settings.button_icon}}
+                  </button>
+                  {%- endif -%}
+                </div>		
+                {%- if block.settings.button_link != blank -%}
+                </a>
+                {%- endif -%}
+        </div>
+       
+          {%- endfor -%}
+        </div>
+        {%- endif -%}
+
+</div>
+  </div>
+</div>
+ <style>
+
+
+.customstyle{{ section.id }} .slick-list {
+    padding-left: 0px!important; 
+}
+
+  </style>
+          <script>
+   var mainSliderAddress=".customstyle{{ section.id }} .sec__magic_slider";
+      var mainSliderSlideAddress=".customstyle{{ section.id }} .sec__magic_slider .slick-slideshow__slide";
+$(document).ready(function(){
+
+   //slickSliderCustom(mainSliderAddress,mainSliderSlideAddress,{{section.settings.slideitem}},2);
+                     });
+  </script>
+{% schema %}
+{
+  "name": "Section Magic Slides",
+  "class": "index-section",
+  "settings": [
+  {
+      "type": "select",
+      "id": "animation",
+      "options": [
+        { "value": "", "label": "None"},
+        { "value": "fade", "label": "Fade"},
+        { "value": "fade-up", "label": "Fade Up"},
+        { "value": "fade-down", "label": "Fade Down"},
+        { "value": "fade-left", "label": "Fade Left"},
+        { "value": "fade-right", "label": "Fade Right"},
+        { "value": "fade-up-right", "label": "Fade Up Right"},
+        { "value": "fade-up-left", "label": "Fade Up Left"},
+        { "value": "fade-down-right", "label": "Fade Down Right"},
+        { "value": "fade-down-left", "label": "Fade Down Left"},
+        { "value": "flip-up", "label": "Flip Up"},
+        { "value": "flip-down", "label": "Flip Down"},
+        { "value": "flip-left", "label": "Flip Left"},
+        { "value": "flip-right", "label": "Flip Right"},
+        { "value": "slide-up", "label": "Slide Up"},
+        { "value": "slide-down", "label": "Slide Down"},
+        { "value": "slide-left", "label": "Slide Left"},
+        { "value": "slide-right", "label": "Slide Right"},
+        { "value": "zoom-in", "label": "Zoom In"},
+        { "value": "zoom-in-up", "label": "Zoom In Up"},
+        { "value": "zoom-in-down", "label": "Zoom In Down"},
+        { "value": "zoom-in-left", "label": "Zoom In Left"},
+        { "value": "zoom-in-right", "label": "Zoom In Right"},
+        { "value": "zoom-out", "label": "Zoom Out"},
+        { "value": "zoom-out-up", "label": "Zoom Out Up"},
+        { "value": "zoom-out-down", "label": "Zoom Out Down"},
+        { "value": "zoom-out-left", "label": "Zoom Out Feft"},
+        { "value": "zoom-out-right", "label": "Zoom Out Right"}
+      ],
+      "label": "Select Animation"
+  },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Healdin"
+    },
+    {
+      "type": "range",
+      "id": "slideitem",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "label": "Slide Item",
+      "default": 3
+    }
+
+],
+  "blocks": [
+    {
+      "type": "banner",
+      "name": "Banner",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+         {
+          "type": "textarea",
+          "id": "description",
+          "label": "HTML / Description"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "View more"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+  "name": "Section Magic Slides",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}
+      
+   

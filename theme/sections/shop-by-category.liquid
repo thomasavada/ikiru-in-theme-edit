@@ -1,0 +1,483 @@
+<div class="collection-tabbed-slider">
+  <div class="page__container">
+    <div class="collection-tabbed-slider-inner">
+      {% if section.settings.title != blank %}
+        <div class="collection-tabbed-slider-header">
+          <h2 class="home-section--title">
+            {{ section.settings.title }}
+          </h2>
+          {% if section.settings.description != blank %}
+            <div class="rte">
+              {{ section.settings.description }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+      <div class="collection-tabbed-slider-content">
+          <div class="collection-tabbed-slider-tab hide-scrollbar">
+            {% for block in section.blocks %}
+              {% if block.settings.title != blank %}
+                <div class="collection-tab-item">
+                  <a href="javascript:;" class="{% if forloop.first %} active {% endif %}" data-id="{{ block.settings.title | replace: ' ', '-' | remove: "&" }}" data-tab>
+                    {% if block.settings.icon != blank %}
+                      <span class="tabbed-icon"><img loading="lazy" src="{{ block.settings.icon | img_url : 'master' }}" alt="{{ block.settings.icon.alt }}"> </span>
+                    {% endif %} 
+                    <span>{{ block.settings.title }} </span>
+                  </a>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="collection-tabbed-slider-tab-content">
+            {% for block in section.blocks %}
+              <div class="collection-content-item {% if forloop.first %} active {% endif %}" id="{{ block.settings.title | replace: ' ', '-' | remove: "&" }}">
+                <div class="collection-slider-container main-carousel">
+                  {% for i in (1..20) %}
+                    {% assign Collection = 'collection_' | append: i %}
+                    {% assign Image = 'custom_image_' | append: i %}
+                    {% assign collectionTopLeft = collections[block.settings[Collection]] %}
+                    {% if collectionTopLeft != blank %}
+                    <div class="collection-slide-item carousel-cell">
+                      <div class="collection-slide-item-inner">
+                        {% if block.settings[Image] != blank %}
+                          <img loading="lazy" src="{{ block.settings[Image] | img_url : 'master' }}" alt="{{ block.settings[Image].alt }}">  
+                        {% else %}  
+                          <img loading="lazy" src="{{ collectionTopLeft.image.src | img_url : 'master' }}" alt="{{ collectionTopLeft.image.src.alt }}">
+                        {% endif %}  
+                        <a href="{{ collectionTopLeft.url }}" class="collection-slide-item-overlay">
+                          <span>{{ collectionTopLeft.title }}</span>
+                        </a>
+                      </div>
+                    </div> 
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flickity/2.0.5/flickity.pkgd.min.js"></script>
+<link rel="stylesheet" href="https://npmcdn.com/flickity@2/dist/flickity.css"> 
+<script>
+  var $carousel = $('.main-carousel').flickity({
+      imagesLoaded: true,
+      contain: true,
+      percentPosition: true,
+      initialIndex: 2,
+      wrapAround: true,
+      accessibility: true,
+      prevNextButtons: true,
+      pageDots: false,
+      cellAlign: "left"
+    });
+  
+  $(document).ready(function(){
+    $('[data-tab]').click(function(){
+      var ID = $(this).attr('data-id');
+      // var Height = $('.collection-slide-item-inner').height();
+      // console.log(Height)
+      $('.collection-tab-item a').removeClass('active');
+      $('.collection-tabbed-slider-tab-content .collection-content-item').removeClass('active');
+      $('.collection-content-item[id='+ID+']').addClass('active');
+      $(this).addClass('active');
+      // $(".flickity-viewport").css('height',Height);
+    });
+  });
+</script>
+
+
+<style>
+  #shopify-section-{{ section.id }} .collection-tabbed-slider{
+    background:{{ section.settings.main_bg }};
+  }
+  {% if section.settings.main_bg == '#ffffff' %}
+   {% else %}
+    #shopify-section-{{ section.id }} .collection-tabbed-slider{
+      padding: 50px 0px;
+    }
+    {% endif %}
+  .collection-tab-item > a:hover, .collection-tab-item > a.active{
+    background:{{ section.settings.tab_bg }};
+  }
+  .collection-tabbed-slider .flickity-prev-next-button {
+      width: 35px;
+      height: 46px;
+      background: rgba(255, 255, 255, .6);
+      border-radius: 0px;
+      opacity: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .collection-tabbed-slider .flickity-prev-next-button.previous {
+      left: 0px;
+  }
+  .collection-tabbed-slider .flickity-prev-next-button.next {
+      right: 20px;
+  }
+  .collection-tabbed-slider .flickity-prev-next-button svg {
+      top: auto;
+      left: auto;
+      width: 15px;
+      height: auto;
+  }
+  .collection-tabbed-slider .flickity-prev-next-button:hover {
+      background-color: #fff;
+      opacity: 1;
+  }
+    @media screen and (max-width:767px){
+      .collection-tabbed-slider .flickity-prev-next-button {
+        width: 27px;
+        height: 35px;
+      display:none;
+    }
+      .collection-tabbed-slider .flickity-prev-next-button svg {
+        width: 12px;
+    }
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Collections tabbed slider",
+    "settings": [
+      {
+        "type": "color",
+        "id": "main_bg",
+        "label": "Section BG",
+        "default": "#f9f4f1"
+      },
+      {
+        "type": "color",
+        "id": "tab_bg",
+        "label": "Tab BG",
+        "default": "#ffe7dc"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Shop By Category"
+      },
+      {
+        "type": "richtext",
+        "id": "description",
+        "label": "Description",
+        "default": "<p>Explore exquisite home collection based on our ethos of six brand pillars</p>"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "Collection item",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Collection Heading"
+          },
+          {
+            "id": "icon",
+            "type": "image_picker",
+            "label": "icon"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 1"
+          },
+          {
+            "type": "collection",
+            "id": "collection_1",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_1",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 2"
+          },
+          {
+            "type": "collection",
+            "id": "collection_2",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_2",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 3"
+          },
+          {
+            "type": "collection",
+            "id": "collection_3",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_3",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 4"
+          },
+          {
+            "type": "collection",
+            "id": "collection_4",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_4",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 5"
+          },
+          {
+            "type": "collection",
+            "id": "collection_5",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_5",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 6"
+          },
+          {
+            "type": "collection",
+            "id": "collection_6",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_6",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 7"
+          },
+          {
+            "type": "collection",
+            "id": "collection_7",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_7",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 8"
+          },
+          {
+            "type": "collection",
+            "id": "collection_8",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_8",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 9"
+          },
+          {
+            "type": "collection",
+            "id": "collection_9",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_9",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 10"
+          },
+          {
+            "type": "collection",
+            "id": "collection_10",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_10",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 11"
+          },
+          {
+            "type": "collection",
+            "id": "collection_11",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_11",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 12"
+          },
+          {
+            "type": "collection",
+            "id": "collection_12",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_12",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 13"
+          },
+          {
+            "type": "collection",
+            "id": "collection_13",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_13",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 14"
+          },
+          {
+            "type": "collection",
+            "id": "collection_14",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_14",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 15"
+          },
+          {
+            "type": "collection",
+            "id": "collection_15",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_15",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 16"
+          },
+          {
+            "type": "collection",
+            "id": "collection_16",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_16",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 17"
+          },
+          {
+            "type": "collection",
+            "id": "collection_17",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_17",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 18"
+          },
+          {
+            "type": "collection",
+            "id": "collection_18",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_18",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 19"
+          },
+          {
+            "type": "collection",
+            "id": "collection_19",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_19",
+            "type": "image_picker",
+            "label": "Custom Image"
+          },
+          {
+            "type": "header",
+            "content": "COLLECTION 20"
+          },
+          {
+            "type": "collection",
+            "id": "collection_20",
+            "label": "Chose Collection"
+          },
+          {
+            "id": "custom_image_20",
+            "type": "image_picker",
+            "label": "Custom Image"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collections tabbed slider"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

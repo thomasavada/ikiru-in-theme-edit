@@ -1,0 +1,169 @@
+<script
+  type="application/json"
+  data-section-id="{{ section.id }}"
+  data-section-type="dynamic-rich-text"
+></script>
+
+<script type="application/pxs-animation-mapping+json">
+  {
+    "blocks": [".rich-text-block"],
+    "elements": []
+  }
+</script>
+
+<section
+  class="
+    rich-text--container
+    rich-text-{{ section.settings.width }}
+  "
+>
+    <div
+      class="
+        rich-text-block
+        rich-text-alignment-{{ section.settings.text_alignment }}
+      "
+      {{ section.shopify_attributes }}
+    >
+        {% if section.settings.title != blank %}
+          <h2
+            class="
+              rich-text-heading
+              rich-text-heading-{{ section.settings.heading_size }}
+            "
+          >
+            {{ section.settings.title | escape }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.text != blank %}
+          <div class="rich-text-content rte" data-rte>
+            {{ section.settings.text }}
+          </div>
+        {% endif %}
+
+      {% if section.settings.toggle_readmore == true and section.settings.radmore_content != blank %}
+      <div class="rte">
+        <div class="moretext">
+          {{ section.settings.radmore_content }}
+        </div>
+        <a class="moreless-button" href="javascript:void(0);">Read more</a>
+      </div>
+      {% endif %}
+      
+    </div>
+</section>
+<style>
+  a.moreless-button {
+      font-size: 18px;
+  }
+  .moretext{
+    display:none;
+  }
+  .moretext p:first-child {
+    margin-top: 0px;
+}
+</style>
+
+{% schema %}
+{
+  "name": "t:sections.rich_text.name",
+  "class": "rich-text--section",
+  "settings": [
+    {
+      "id": "width",
+      "type": "select",
+      "label": "t:sections.rich_text.width.label",
+      "options": [
+        {
+          "value": "regular",
+          "label": "t:sections.rich_text.width.option_1"
+        },
+        {
+          "value": "wide",
+          "label": "t:sections.rich_text.width.option_2"
+        },
+        {
+          "value": "full-width",
+          "label": "t:sections.rich_text.width.option_3"
+        }
+      ],
+      "default": "regular"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "t:sections.rich_text.title.label",
+      "default": "Rich text"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "t:sections.rich_text.text.label",
+      "default": "<p>Use this section to welcome customers to your store, say a bit about your brand, or share news and seasonal promotions.</p>"
+    },
+    {
+      "id": "heading_size",
+      "type": "select",
+      "label": "t:sections.rich_text.heading_size.label",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:sections.rich_text.heading_size.option_1"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.rich_text.heading_size.option_2"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.rich_text.heading_size.option_3"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "id": "text_alignment",
+      "type": "select",
+      "label": "t:sections.rich_text.text_alignment.label",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.rich_text.text_alignment.option_1"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.rich_text.text_alignment.option_2"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.rich_text.text_alignment.option_3"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "READMORE READLESS"
+    },
+    {
+      "type": "checkbox",
+      "id": "toggle_readmore",
+      "label": "Enable Readmore",
+      "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "radmore_content",
+      "label": "Readmore content",
+      "default": "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.rich_text.presets.rich_text.name",
+      "category": "t:sections.rich_text.presets.rich_text.category",
+      "settings": {}
+    }
+  ]
+}
+{% endschema %}

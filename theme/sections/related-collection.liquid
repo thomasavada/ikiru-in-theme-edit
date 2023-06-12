@@ -1,0 +1,59 @@
+{% if product.metafields.custom.related_collection != blank %}
+<section class="product-section--container product-row--container related-collection-wrap">
+  <h2 class="product-section--title product-recommendations--title">{{ section.settings.related_heading }}</h2>
+  
+  {% assign related_Collection = product.metafields.custom.related_collection.value %}
+  
+  <ul class="home-section--content featured-collection__content" data-content data-layout="grid">
+    {% for RCollection in related_Collection %}
+      
+      
+    <li class="productgrid--item  imagestyle--cropped-medium show-actions--mobile" data-product-item="" >
+      <div class="productitem" data-product-item-content="">
+          <div class="productitem__container">
+              <div class="productitem__image-container">
+                  <a class="productitem--image-link" href="{{ RCollection.url }}" tabindex="-1">
+                      <figure class="productitem--image" data-product-item-image="">
+                          <img loading="lazy" src="{{ RCollection.image | img_url : 'master' }}" class="productitem--image-primary" alt="{{ RCollection.image.alt}}">
+                      </figure>
+                  </a>
+              </div>
+              <div class="productitem--info">
+                  <h2 class="productitem--title">
+                      <a href="{{ RCollection.url }}">
+                      {{ RCollection.title }}
+                      </a>
+                  </h2>
+              </div>
+          </div>
+      </div>
+  </li>
+     {% endfor %}  
+  </ul>
+</section>
+{% endif %}
+{% schema %}
+  {
+    "name": "Related Collection",
+    "settings": [
+      {
+        "type": "text",
+        "id": "related_heading",
+        "label": "Related Heading",
+        "default": "Related Collection"
+      }
+    ],
+    "presets" : [
+      {
+        "name" : "Related Collection",
+        "category" : "Collection"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

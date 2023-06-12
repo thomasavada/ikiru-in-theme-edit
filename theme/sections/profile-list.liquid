@@ -1,0 +1,105 @@
+ {% if section.settings.title  != blank %}
+    <div class="
+    rich-text--container
+    rich-text-regular
+  ">
+    <div class="rich-text-block rich-text-alignment-center">
+          <h2 class="
+              rich-text-heading
+              rich-text-heading-medium
+            ">
+            {{ section.settings.title }}
+          </h2>
+    </div>
+</div>
+    {% endif %}
+<section class="team-main profile-template">
+  <div class="image-with-text">
+      <div class="team-inner">
+        {%- for block in section.blocks -%}
+          {% if block.type == 'item' %}
+            <div class="team-box">
+                <a href="{{ block.settings.profile_url }}" class="team-box-inner">
+                  {% if block.settings.image != blank %}
+                  <div class="team-box-image">
+                      <img loading="lazy" src="{{ block.settings.image | img_url:  'master' }}" alt="{{ block.settings.image.alt }}">
+                  </div>
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                  <div class="team-box-content">
+                    {% if block.settings.title != blank %}
+                    <h5>{{ block.settings.title }}</h5>
+                    {% endif %}
+                    {% if block.settings.description != blank %}
+                    <p>{{ block.settings.description }}</p>
+                    {% endif %}
+                  </div>
+                  {% endif %}
+                </a>
+            </div>
+          {% endif %}
+        {%- endfor -%}
+      </div>
+  </div>
+</section>
+
+<style>
+  .profile-template a{
+    color:#494d41;
+    text-decoration: none;
+  }
+  .profile-template {
+      margin-top: 40px;
+  }
+</style>
+
+
+{% schema %}
+  {
+    "name": "Profile Grid",
+    "settings": [
+      {
+       "type": "text",
+       "id": "title",
+       "label": "Heading",
+       "default": "Heading"
+     }
+    ],
+    "blocks": [
+     {
+       "name": "Profile Card",
+       "type": "item",
+       "settings": [
+         {
+           "type": "image_picker",
+           "id": "image",
+           "label": "Image"
+         },
+         {
+           "type": "text",
+           "id": "title",
+           "label": "Name",
+           "default": "Name"
+         },
+         {
+           "type": "text",
+           "id": "description",
+           "label": "Sub title"
+         },
+         {
+           "type": "url",
+           "id": "profile_url",
+           "label": "Profile URL"
+         }
+       ]
+     }
+  ],
+  "presets": [
+    {
+      "name": "Profile Grid",
+      "settings": {
+      }
+    }
+  ]
+  }
+{% endschema %}

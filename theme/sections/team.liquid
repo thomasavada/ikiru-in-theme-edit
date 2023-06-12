@@ -1,0 +1,87 @@
+<section class="team-main">
+  <div class="image-with-text">
+      <div class="team-inner">
+        {%- for block in section.blocks -%}
+          {% if block.type == 'item' %}
+            <div class="team-box">
+                <div class="team-box-inner">
+                  {% if block.settings.image != blank %}
+                  <div class="team-box-image">
+                      <img loading="lazy" src="{{ block.settings.image | img_url:  'master' }}" alt="{{ block.settings.image.alt }}">
+                  </div>
+                  {% endif %}
+                  {% if block.settings.title != blank %}
+                  <div class="team-box-content">
+                    {% if block.settings.title != blank %}
+                    <h5>{{ block.settings.title }}</h5>
+                    {% endif %}
+                    {% if block.settings.description != blank %}
+                    <p>{{ block.settings.description }}</p>
+                    {% endif %}
+                    {% if block.settings.linkedin_url != blank %}
+                    <div class="team-box-content-social">
+                        <a href="{{ block.settings.linkedin_url }}" target="_blank">
+                           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M14.96 12.4356C15.4151 11.7244 16.2293 10.7307 18.0516 10.7307C20.3076 10.7307 22 12.2044 22 15.3742V21.2889H18.5707V15.7778C18.5707 14.3911 18.0747 13.4436 16.8338 13.4436C15.8862 13.4436 15.3227 14.0818 15.0738 14.6987C14.9856 14.968 14.9471 15.2511 14.96 15.5342V21.2889H11.5289C11.5289 21.2889 11.5751 11.9413 11.5289 10.9778H14.96V12.4356ZM7.94133 6C6.768 6 6 6.76978 6 7.77778C6 8.78578 6.74489 9.55556 7.89511 9.55556H7.91822C9.11467 9.55556 9.85956 8.76267 9.85956 7.77778C9.85956 6.79289 9.11467 6 7.94133 6ZM6.20444 21.2889H9.63378V10.9778H6.20444V21.2889Z" fill="currentColor"/>
+                            </svg>
+                        </a>
+                    </div>
+                      {% endif %}
+                  </div>
+                  {% endif %}
+                </div>
+            </div>
+          {% endif %}
+        {%- endfor -%}
+      </div>
+  </div>
+</section>
+
+
+
+
+{% schema %}
+  {
+    "name": "Team",
+    "settings": [
+      
+    ],
+    "blocks": [
+     {
+       "name": "Team member",
+       "type": "item",
+       "settings": [
+         {
+           "type": "image_picker",
+           "id": "image",
+           "label": "Image"
+         },
+         {
+           "type": "text",
+           "id": "title",
+           "label": "Member name",
+           "default": "Name"
+         },
+         {
+           "type": "text",
+           "id": "description",
+           "label": "Team name",
+           "default": "Member Job title"
+         },
+         {
+           "type": "url",
+           "id": "linkedin_url",
+           "label": "Linkedin URL"
+         }
+       ]
+     }
+  ],
+  "presets": [
+    {
+      "name": "Team Member",
+      "settings": {
+      }
+    }
+  ]
+  }
+{% endschema %}
