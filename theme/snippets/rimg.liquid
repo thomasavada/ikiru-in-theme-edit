@@ -255,11 +255,7 @@
 {% comment %} Background image {% endcomment %}
 {% if background %}
   {% if lazy %}
-    data-rimg="lazy"
-    data-rimg-scale="{{ rimg_scale }}"
-    data-rimg-template="{{ rimg_url_template }}"
-    data-rimg-max="{{ img.width }}x{{ img.height }}"
-    data-rimg-crop="{{ crop }}"
+    data-rimg="lazy" data-rimg-scale="{{ rimg_scale }}" data-rimg-template="{{ rimg_url_template }}" data-rimg-max="{{ size }}" data-rimg-crop="{{ crop }}"
     {% if placeholder %}data-rimg-placeholder="{{ placeholder }}"{% endif %}
     {% if class != blank %}class="{{ class }}"{% endif %}
     {% if style != blank %}style="{{ style }}"{% endif %}
@@ -268,23 +264,23 @@
   {% else %}
     {% if class != blank %}class="{{ class }}"{% endif %}
     style="
-      {% if rimg_format == '' %}
-        background-image: url('{{ img | img_url: rimg_size, crop: crop }}');
-      {% else %}
-        background-image: url('{{ img | img_url: rimg_size, format: rimg_format }}');
-      {% endif %}
+    {% if rimg_format == '' %}
+      background-image: url('{{ img | img_url: rimg_size, crop: crop }}');
+    {% else %}
+      background-image: url('{{ img | img_url: rimg_size, format: rimg_format }}');
+    {% endif %}
 
-      {% if style != blank %}{{ style }}{% endif %}
+    {% if style != blank %}{{ style }}{% endif %}
     "
     {% if attr != blank %}{{ attr }}{% endif %}
-
   {% endif %}
 
-{% comment %} Image tag {% endcomment %}
+  {% comment %} Image tag {% endcomment %}
 {% else %}
   {% if lazy and disable_noscript != true %}
     <noscript data-rimg-noscript>
-      <img loading="lazy"
+      <img
+        loading="lazy"
         {% if rimg_format == '' %}
           src="{{ img | img_url: rimg_size, crop: crop }}"
         {% else %}
@@ -294,14 +290,21 @@
         alt="{{ rimg_alt }}"
         data-rimg="noscript"
         srcset="{{ rimg_density_srcset }}"
-        {% if class != blank %}class="{{ class }}"{% endif %}
-        {% if style != blank %}style="{{ style }}"{% endif %}
-        {% if attr != blank %}{{ attr }}{% endif %}
+        {% if class != blank %}
+          class="{{ class }}"
+        {% endif %}
+        {% if style != blank %}
+          style="{{ style }}"
+        {% endif %}
+        {% if attr != blank %}
+          {{- attr -}}
+        {% endif %}
       >
     </noscript>
   {% endif %}
 
-  <img loading="lazy"
+  <img
+    loading="lazy"
     {% if rimg_format == '' %}
       src="{{ img | img_url: rimg_size, crop: crop }}"
     {% else %}
@@ -322,9 +325,15 @@
       srcset="{{ rimg_density_srcset }}"
     {% endif %}
 
-    {% if class != blank %}class="{{ class }}"{% endif %}
-    {% if style != blank %}style="{{ style }}"{% endif %}
-    {% if attr != blank %}{{ attr }}{% endif %}
+    {% if class != blank %}
+      class="{{ class }}"
+    {% endif %}
+    {% if style != blank %}
+      style="{{ style }}"
+    {% endif %}
+    {% if attr != blank %}
+      {{- attr -}}
+    {% endif %}
   >
 {% endif %}
 

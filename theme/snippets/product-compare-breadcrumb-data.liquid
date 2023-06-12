@@ -1,0 +1,27 @@
+{% comment %}Inject product-compare-breadcrumb-data begin{% endcomment %}
+{% assign compare_breadcrumb_title = null %}
+
+{% case request.page_type %}
+  {% when 'product' %}
+    {% assign compare_breadcrumb_title = product.title %}
+  {% when 'collection' %}
+    {% assign compare_breadcrumb_title = collection.title %}
+  {% when 'index' %}
+    {% assign compare_breadcrumb_title = 'general.breadcrumbs.home' | t %}
+  {% when 'search' %}
+    {% assign compare_breadcrumb_title = 'general.accessibility.search' | t %}
+{% endcase %}
+
+{% assign compare_breadcrumb_update = true %}
+
+{% if template.name == 'product' and template.suffix contains 'compare' %}
+  {% assign compare_breadcrumb_update = false %}
+{% endif %}
+
+<script type="application/json" data-product-compare-breadcrumb-data>
+  {
+    "title": {{ compare_breadcrumb_title | json }},
+    "update": {{ compare_breadcrumb_update }}
+  }
+</script>
+{% comment %}Inject product-compare-breadcrumb-data end{% endcomment %}

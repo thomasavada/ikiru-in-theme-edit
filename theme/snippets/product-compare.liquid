@@ -1,0 +1,80 @@
+{% comment %}Inject product-compare-drawer begin{% endcomment %}
+<div class="product-compare-drawer" data-product-compare-drawer>
+  <div class="product-compare-drawer__header" data-product-compare-drawer-header>
+    <h2 class="product-compare-drawer__title" data-product-compare-drawer-title>
+      {{ 'product_compare.drawer_title' | t }}
+    </h2>
+
+    <p
+      class="product-compare-drawer__notification"
+      data-product-count-one="{{ 'product_compare.drawer_notification.one' | t }}"
+      data-product-count-other="{{ 'product_compare.drawer_notification.other' | t: count: '** count **' }}"
+      data-product-compare-drawer-notification
+    >
+      {{ 'product_compare.drawer_notification' | t: count }}
+    </p>
+
+    <span class="product-compare-drawer__trigger">
+      {% render 'icon-chevron-down' %}
+    </span>
+  </div>
+
+  <div class="product-compare-drawer__container">
+    <div class="product-compare-drawer__items" data-compare-drawer-items-container>
+      <template data-product-compare-drawer-item-template>
+        <div
+          class="
+            product-compare-drawer__item
+            imagestyle--{% if settings.product_grid_image_crop and settings.product_grid_image_style != 'natural' %}cropped-{% endif %}{{ settings.product_grid_image_style }}
+          "
+        >
+          <div class="product-compare-drawer__image">
+            <figure class="productitem--image" data-product-compare-drawer-image></figure>
+          </div>
+          <a class="product-compare-drawer__item-title" data-product-compare-drawer-title></a>
+          <button class="product-compare-drawer__remove" data-product-compare-drawer-remove>
+            {%
+              render 'icon-library',
+              id: 'icon-remove',
+              icon_class: 'product-compare-drawer__remove-icon',
+            %}
+          </button>
+        </div>
+      </template>
+
+      {% for i in (1..3) %}
+        <div class="product-compare-drawer__item-placeholder" data-product-compare-drawer-item-placeholder>
+          <p class="product-compare-drawer__item-placeholder-text">
+            {% if forloop.index == 1 %}
+              {{ 'product_compare.drawer_notification_placeholder.first' | t }}
+            {% elsif forloop.index == 2 %}
+              {{ 'product_compare.drawer_notification_placeholder.second' | t }}
+            {% elsif forloop.index == 3 %}
+              {{ 'product_compare.drawer_notification_placeholder.third' | t }}
+            {% endif %}
+          </p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="product-compare-drawer__actions">
+      <a
+        class="
+          product-compare-drawer__link
+          button-primary
+          disabled
+        "
+        href="{{ routes.root_url }}"
+        data-product-compare-drawer-link
+        data-product-compare-drawer-link-text="{{ 'product_compare.compare' | t }}"
+      >
+        {{ 'product_compare.compare' | t }}
+      </a>
+
+      <button class="product-compare-drawer__clear-all" data-product-compare-clear-all>
+        {{ 'product_compare.drawer_clear_all' | t }}
+      </button>
+    </div>
+  </div>
+</div>
+{% comment %}Inject product-compare-drawer end{% endcomment %}

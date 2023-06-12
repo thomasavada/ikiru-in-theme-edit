@@ -1,0 +1,34 @@
+{% unless settings.reduce_animations %}
+  <script>
+    (
+      function () {
+        var classes = {
+          block: 'pxu-lia-block',
+          element: 'pxu-lia-element',
+        };
+
+        document
+          .querySelectorAll('[type="application/pxs-animation-mapping+json"]')
+          .forEach(function (mappingEl) {
+            const section = mappingEl.parentNode;
+            try {
+              const mapping = JSON.parse(mappingEl.innerHTML);
+              mapping.elements.forEach(function (elementSelector) {
+                section
+                  .querySelectorAll(elementSelector)
+                  .forEach(function (element) { element.classList.add(classes.element); });
+              });
+
+              mapping.blocks.forEach(function (blockSelector) {
+                section
+                  .querySelectorAll(blockSelector)
+                  .forEach(function (block) { block.classList.add(classes.block); });
+              });
+            } catch (error) {
+              console.warn('Unable to parse animation mapping', mappingEl, error);
+            }
+        });
+      }
+    )()
+  </script>
+{% endunless %}

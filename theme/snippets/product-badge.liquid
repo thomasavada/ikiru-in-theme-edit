@@ -65,27 +65,27 @@
 {% assign savings_money_range = 0 %}
 {% assign savings_percentage_range = 0 %}
 
-{% assign price_min = nil %}
-{% assign price_max = nil %}
-{% assign compare_at_price_min = nil %}
-{% assign compare_at_price_max = nil %}
+{% assign price_min = null %}
+{% assign price_max = null %}
+{% assign compare_at_price_min = null %}
+{% assign compare_at_price_max = null %}
 {% assign price_varies = false %}
 {% assign compare_at_price_varies = false %}
 {% for variant in product.variants %}
-  {% if price_min == nil or variant.price < price_min %}
+  {% if price_min == null or variant.price < price_min %}
     {% assign price_min = variant.price %}
   {% endif %}
-  {% if price_max == nil or variant.price > price_max %}
+  {% if price_max == null or variant.price > price_max %}
     {% assign price_max = variant.price %}
   {% endif %}
   {% assign tmp_compare_at_price = variant.compare_at_price %}
   {% unless variant.compare_at_price %}
     {% assign tmp_compare_at_price = variant.price %}
   {% endunless %}
-  {% if compare_at_price_min == nil or tmp_compare_at_price < compare_at_price_min %}
+  {% if compare_at_price_min == null or tmp_compare_at_price < compare_at_price_min %}
     {% assign compare_at_price_min = tmp_compare_at_price %}
   {% endif %}
-  {% if compare_at_price_max == nil or tmp_compare_at_price > compare_at_price_max %}
+  {% if compare_at_price_max == null or tmp_compare_at_price > compare_at_price_max %}
     {% assign compare_at_price_max = tmp_compare_at_price %}
   {% endif %}
   {% if variant.price != price_min %}
@@ -98,12 +98,22 @@
   {% assign price_difference = tmp_compare_at_price | minus: variant.price %}
   {% if price_difference > savings_money_range %}
     {% assign savings_money_range = price_difference %}
-    {% assign savings_percentage_range = savings_money_range | times: 1.0 | divided_by: variant.compare_at_price | times: 100.0 | round %}
+    {% assign savings_percentage_range = savings_money_range
+      | times: 1.0
+      | divided_by: variant.compare_at_price
+      | times: 100.0
+      | round
+    %}
   {% endif %}
 {% endfor %}
 
 {% assign savings_money_single = selected_variant.compare_at_price | minus: selected_variant.price %}
-{% assign savings_percentage_single = savings_money_single | times: 1.0 | divided_by: selected_variant.compare_at_price | times: 100.0 | round %}
+{% assign savings_percentage_single = savings_money_single
+  | times: 1.0
+  | divided_by: selected_variant.compare_at_price
+  | times: 100.0
+  | round
+%}
 
 {% assign product_available = product_available | default: product.available %}
 
@@ -119,16 +129,23 @@
     {% assign on_sale = false %}
   {% endif %}
 
-  <span class="{{ class_root }}__badge {{ class_root }}__badge--sale"
+  <span
+    class="{{ class_root }}__badge {{ class_root }}__badge--sale"
     data-badge-sales
-    {% if on_sale != true %}style="display: none;"{% endif %}
+    {% if on_sale != true %}
+      style="display: none;"
+    {% endif %}
   >
     <span data-badge-sales-range>
       {% if sales_badge_style == 'percent' %}
         {% if price_varies or compare_at_price_varies %}
           {{ 'product_price.badge.sale_percentage_range_html' | t: savings: savings_percentage_range | strip_newlines }}
         {% else %}
-          {{ 'product_price.badge.sale_percentage_single_html' | t: savings: savings_percentage_range | strip_newlines }}
+          {{
+            'product_price.badge.sale_percentage_single_html'
+            | t: savings: savings_percentage_range
+            | strip_newlines
+          }}
         {% endif %}
       {% elsif sales_badge_style == 'money' %}
         {% if price_varies or compare_at_price_varies %}

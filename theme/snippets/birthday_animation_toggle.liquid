@@ -1,0 +1,44 @@
+{% if settings.birthday_animation_toggle == true %}
+  {% if template.name == 'index' %}
+    {% comment %}  Birthday effect  {% endcomment %}
+    <div data-tag-remove>
+      <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+      <script>
+        var colors = ["#8b5642", "#6a696b"];
+        function frame() {
+            confetti({
+                particleCount: 2,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: colors,
+            });
+            confetti({
+                particleCount: 2,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: colors,
+            });
+
+            if (Date.now() < Date.now() + 15000) {
+                requestAnimationFrame(frame);
+            }
+        }
+        window.onload = frame();
+      </script>
+      <style>
+        div[data-tag-remove] + canvas{
+            z-index:999999 !important;
+            position:absolute !important;
+        }
+      </style>
+    </div>
+    <script>
+      setTimeout(function () {
+          $('[data-tag-remove]').next('canvas').fadeOut();
+      }, 5000);
+    </script>
+    {% comment %}  Birthday effect  {% endcomment %}
+  {% endif %}
+{% endif %}

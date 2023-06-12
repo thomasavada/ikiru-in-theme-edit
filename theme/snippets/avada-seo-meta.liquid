@@ -1,25 +1,5 @@
 {%- assign avada_seo_ovr_product_ids = "" -%}
-{% if request.page_type == 'product' %}
-{%- unless avada_seo_ovr_product_ids contains product.id -%}
-{%- capture avada_seo_meta_title -%}Buy {{ product.title }} - Ikiru {%- endcapture -%}
-{%- capture avada_seo_meta_description -%}Shop for {{ collection.title }}s online and Don't miss out on incredible discounts Upto 40% off, start shopping today! explore curated range of home furniture, decor, Lighting, kitchen and many more.{%- endcapture -%}
-{% endunless %}
-{% endif %}
-
-{% if request.page_type == 'collection' %}
-{%- unless avada_seo_ovr_collection_ids contains collection.id -%}
-{%- capture avada_seo_meta_title -%}Buy designer {{ collection.title }} at best prices - IKIRU{%- endcapture -%}
-{%- capture avada_seo_meta_description -%}Shop from a selected range of designer {{ collection.title }}s online and Don't miss out on incredible discounts Upto 40% off, start shopping today! explore curated range of home furniture, decor, Lighting, kitchen and many more.{%- endcapture -%}
-{% endunless %}
-{% endif %}
-
-{% if request.page_type == 'article' %}
-{%- unless avada_seo_ovr_article_ids contains article.id -%}
-{%- capture avada_seo_meta_title -%}{{ article.title }}{%- endcapture -%}
-{%- capture avada_seo_meta_description -%}{{ article.excerpt_or_content }}{%- endcapture -%}
-{% endunless %}
-{% endif %}
-
+{%- assign avada_seo_ovr_collection_ids = "312824070297" -%}
 {% if avada_seo_meta_title %}
 {%- assign seo_title = avada_seo_meta_title | strip_html | strip -%}
 {%- assign page_title = seo_title -%}

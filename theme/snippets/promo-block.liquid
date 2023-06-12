@@ -53,7 +53,9 @@
 }
 {% endstyle %}
 
-
+<script>
+  console.log('{{ block.settings.image | img_url: '720x' }}')
+</script>
 <{% if block.settings.title != blank and block.settings.text != blank %}article{% else %}div{% endif %}
   class="{{ classes | replace: '  ', ' ' | strip_newlines }} {% if block.settings.image == blank %}onboarding-image{% endif %}"
   {{ block.shopify_attributes }}
@@ -63,7 +65,7 @@
       img: block.settings.image,
       background: true,
       lazy: true,
-      size: '1350x1350'
+      size: '720x720'
     %}
   {% endif %}
 >
@@ -74,7 +76,7 @@
       lazy: true,
       canvas: true,
       class: 'promo-block--background',
-      size: '1350x1350'
+      size: '720x720'
     %}
   {% endif %}
 

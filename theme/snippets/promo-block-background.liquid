@@ -19,7 +19,7 @@
           -%}
         {%- endcapture -%}
         background-color: {{ settings.color_text | color_mix: settings.color_background, 10 }};
-        background-image: url('{{ bg_image | strip_newlines }}');
+        background-image: url('{{ bg_image | strip_newlines | img_url: '720x' }}');
       {% endunless %}
     }
 
